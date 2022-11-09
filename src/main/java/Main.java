@@ -34,27 +34,20 @@ public class Main
       //  System.out.println(jsonString);
        // JSONParser parser = new JSONParser();
         //System.out.println(brands[(int)(Math.random() * ( 3 - 0 ))]);
-        String create_brand = "CREATE TABLE  IF NOT EXISTS brands ( brand_id INT(4) NOT NULL AUTO_INCREMENT, brand_name VARCHAR(10), PRIMARY KEY (brand_id))";
+
+
         Statement stmt=conn.createStatement();
         stmt.executeUpdate(db);
+        String drop_table ="DROP TABLE IF EXISTS brands";
+        stmt.executeUpdate(drop_table);
+        String create_brand = "CREATE TABLE  IF NOT EXISTS brands ( brand_id INT(4) NOT NULL AUTO_INCREMENT, brand_name VARCHAR(100), PRIMARY KEY (brand_id))";
         stmt.execute(create_brand);
+        for(int i=0;i<=3;i++)
+        {
 
-
-//        for(int i=0;i<4;i++)
-//        {
-//           String s="INSERT INTO brands values ("+brands[i]+")";
-//           stmt.executeUpdate(s);
-//        }
-       // ptmst.executeUpdate();
-//        for(int i=0;i<3;i++){
-//            PreparedStatement stmt1= conn.prepareStatement("insert into brands values(brand_name = ?)");
-//            System.out.println(brands[i]);
-//            System.out.println(brands[i+1]);
-//            System.out.println(brands[i+2]);
-//            stmt1.setString(1,"Nykka");
-//            String j= String.valueOf(stmt1.executeUpdate());
-//            System.out.println(j + "record loaded");
-//        }
+            String insertBrand = "insert into brands(brand_id,brand_name) values("+(i+1)+",'"+brands[i]+"')";
+            stmt.executeUpdate(insertBrand);
+        }
 
 
 
