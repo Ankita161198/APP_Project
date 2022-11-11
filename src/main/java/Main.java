@@ -12,20 +12,12 @@ import java.net.http.HttpResponse;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-
-
-//import org.json.JSONString;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class Main
 {
-
-    public static String[] brands = {"Maybelline", "Nykka", "Faces Canada", "Lakme"};
-
-
     public static void main( String[] args ) throws ParseException, IOException, InterruptedException, SQLException, org.json.simple.parser.ParseException {
         Scanner sc=new Scanner(System.in);
         Connection conn = Connect.ConnectDB();
@@ -37,11 +29,10 @@ public class Main
 
         Statement stmt = conn.createStatement();
         String jsonstring = (String) response.body();
+
         Product p = new Product();
 
         p.createTable(jsonstring,stmt);
-
-
 
         String[] id=jsonArrayOutput(jsonstring,"id");
         String[] name=jsonArrayOutput(jsonstring,"name");
@@ -53,10 +44,7 @@ public class Main
         String[] product_link=jsonArrayOutput(jsonstring,"product_link");
         String[] website_link=jsonArrayOutput(jsonstring,"website_link");
 
-
-
         p.insertProducts(id,name,price,description,product_type,rating,image_link,product_link,website_link,stmt);
-
 
         System.out.println("\nWelcome to Maybelline Product Tracker\n");
         while(true){
@@ -64,7 +52,6 @@ public class Main
             System.out.println("Enter your choice :- ");
             int choice=sc.nextInt();
             switch (choice){
-
                 case 1:
                     p.selectAllProducts(stmt);
                     break;
@@ -74,18 +61,28 @@ public class Main
                     p.selectProductbyPT(stmt,pt);
                     break;
                 case 3:
-
+                    System.out.println("Enter a rating, you will be given a list of all products with same or higher rating :- ");
+                    float r=sc.nextFloat();
+                    p.displayProductbyRating(stmt,r);
+                    break;
                 case 4:
-
+                    System.out.println("Select a product type you wish to update the rating of.");
+                    System.out.println(displayproductType());
+                    int pt1=sc.nextInt();
+                    p.updateRating(stmt,pt1);
+                    break;
                 case 5:
-
+                    System.out.println("Select a product type you wish to delete");
+                    System.out.println(displayproductType());
+                    int pt2=sc.nextInt();
+                    p.deleteProduct(stmt,pt2);
+                    break;
                 case 6:
                     System.exit(0);
-
             }
-    }
-   }
+        }
 
+   }
     public static String[] jsonArrayOutput(String jsonstring,String columnName) throws org.json.simple.parser.ParseException {
         // System.out.println(jsonstring);
         JSONParser parser = new JSONParser();
