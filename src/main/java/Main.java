@@ -22,14 +22,10 @@ import org.json.simple.parser.JSONParser;
 
 public class Main
 {
-    //  public static String[] brands = {"Maybelline", "Nykka", "Faces Canada", "Lakme"};
+
+    public static String[] brands = {"Maybelline", "Nykka", "Faces Canada", "Lakme"};
 
 
-    //    public static int getRandomValue(int Min, int Max){
-//        return ThreadLocalRandom
-//                .current()
-//                .nextInt(Min, Max + 1);
-//    }
     public static void main( String[] args ) throws ParseException, IOException, InterruptedException, SQLException, org.json.simple.parser.ParseException {
         Scanner sc=new Scanner(System.in);
         Connection conn = Connect.ConnectDB();
@@ -46,6 +42,7 @@ public class Main
         p.createTable(jsonstring,stmt);
 
 
+
         String[] id=jsonArrayOutput(jsonstring,"id");
         String[] name=jsonArrayOutput(jsonstring,"name");
         String[] price=jsonArrayOutput(jsonstring,"price");
@@ -57,7 +54,9 @@ public class Main
         String[] website_link=jsonArrayOutput(jsonstring,"website_link");
 
 
+
         p.insertProducts(id,name,price,description,product_type,rating,image_link,product_link,website_link,stmt);
+
 
         System.out.println("\nWelcome to Maybelline Product Tracker\n");
         while(true){
@@ -84,14 +83,9 @@ public class Main
                     System.exit(0);
 
             }
-        }
-
-
-
-
-
-
     }
+   }
+
     public static String[] jsonArrayOutput(String jsonstring,String columnName) throws org.json.simple.parser.ParseException {
         // System.out.println(jsonstring);
         JSONParser parser = new JSONParser();
