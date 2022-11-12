@@ -6,6 +6,10 @@ import java.util.Scanner;
 
 public class Product {
     Scanner sc=new Scanner(System.in);
+    Statement stmt;
+    public Product(Statement stmt) {
+        this.stmt=stmt;
+    }
 
     public void createTable(String jsonstring, Statement stmt) throws SQLException {
         String create_pt_lst_table="CREATE TABLE IF NOT EXISTS productlist(id INT(10)," +
@@ -30,33 +34,52 @@ public class Product {
                 String insertList = "insert into productlist(id,name,price,description,product_type,rating,image_link,product_link,website_link) values("+id[i]+",'"+name[i]+"',"+price[i]+",'"+description[i]+"','"+product_type[i]+"',"+rating[i]+",'"+image_link[i]+"','"+product_link[i]+"','"+website_link[i]+"' )";
                 stmt.executeUpdate(insertList);
 
+
             }
         }
 
 
     }
-    public void selectAllProducts(Statement stmt) throws SQLException {
+    public boolean selectAllProducts() throws SQLException {
 
         String selectAll ="select name,price,rating from productlist";
         ResultSet rs=stmt.executeQuery(selectAll);
-        displayData(rs);
+        if(rs.next()) {
+            displayData(rs);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
 
-    public void selectProductbyPT(Statement stmt,int choice) throws SQLException {
+    public boolean selectProductbyPT(int choice) throws SQLException {
         String type=gettype(choice);
         String selectAll ="select name,price,rating from productlist where product_type='"+type+"'";
         ResultSet rs=stmt.executeQuery(selectAll);
-        displayData(rs);
+        if(rs.next()) {
+            displayData(rs);
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public void displayProductbyRating(Statement stmt,float rating) throws SQLException {
+    public boolean displayProductbyRating(float rating) throws SQLException {
+
         String selectAll ="select name,price,rating from productlist where rating>="+rating+" order by rating ";
         ResultSet rs=stmt.executeQuery(selectAll);
-        displayData(rs);
+        if(rs.next()){
+            displayData(rs);
+            return true;
+        }else{
+        return false;
+        }
+
     }
 
-    public void updateRating(Statement stmt,int choice) throws SQLException {
+    public void updateRating(int choice) throws SQLException {
         String type=gettype(choice);
         String selectAll ="select name from productlist where product_type='"+type+"'";
         ResultSet rs1=stmt.executeQuery(selectAll);
@@ -80,7 +103,6 @@ public class Product {
         stmt.executeUpdate(updateRate);
         System.out.println("Rating successfully updated!");
         String selectrate ="select name,rating from productlist where name='"+nameToDelete+"'";
-
         ResultSet rs2=stmt.executeQuery(selectrate);
 
         System.out.println("\nUpdated product with new rating\n");
