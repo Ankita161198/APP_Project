@@ -30,10 +30,9 @@ public class Main
         Statement stmt = conn.createStatement();
         String jsonstring = (String) response.body();
 
-        Product p = new Product();
+        Product p = new Product(stmt);
 
         p.createTable(jsonstring,stmt);
-
         String[] id=jsonArrayOutput(jsonstring,"id");
         String[] name=jsonArrayOutput(jsonstring,"name");
         String[] price=jsonArrayOutput(jsonstring,"price");
@@ -53,23 +52,23 @@ public class Main
             int choice=sc.nextInt();
             switch (choice){
                 case 1:
-                    p.selectAllProducts(stmt);
+                    p.selectAllProducts();
                     break;
                 case 2:
                     System.out.println(displayproductType());
                     int pt=sc.nextInt();
-                    p.selectProductbyPT(stmt,pt);
+                    p.selectProductbyPT(pt);
                     break;
                 case 3:
                     System.out.println("Enter a rating, you will be given a list of all products with same or higher rating :- ");
                     float r=sc.nextFloat();
-                    p.displayProductbyRating(stmt,r);
+                    p.displayProductbyRating(r);
                     break;
                 case 4:
                     System.out.println("Select a product type you wish to update the rating of.");
                     System.out.println(displayproductType());
                     int pt1=sc.nextInt();
-                    p.updateRating(stmt,pt1);
+                    p.updateRating(pt1);
                     break;
                 case 5:
                     System.out.println("Select a product type you wish to delete");
@@ -84,7 +83,6 @@ public class Main
 
    }
     public static String[] jsonArrayOutput(String jsonstring,String columnName) throws org.json.simple.parser.ParseException {
-        // System.out.println(jsonstring);
         JSONParser parser = new JSONParser();
         JSONArray arr = (JSONArray) parser.parse(jsonstring);
         String[] result = new String[arr.size()];
