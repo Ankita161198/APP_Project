@@ -33,19 +33,9 @@ public class Main
         Product p = new Product(stmt);
 
         p.createTable(jsonstring,stmt);
-        String[] id=jsonArrayOutput(jsonstring,"id");
-        String[] name=jsonArrayOutput(jsonstring,"name");
-        String[] price=jsonArrayOutput(jsonstring,"price");
-        String[] description =jsonArrayOutput(jsonstring,"description");
-        String[] rating=jsonArrayOutput(jsonstring,"rating");
-        String[] product_type=jsonArrayOutput(jsonstring,"product_type");
-        String[] image_link=jsonArrayOutput(jsonstring,"image_link");
-        String[] product_link=jsonArrayOutput(jsonstring,"product_link");
-        String[] website_link=jsonArrayOutput(jsonstring,"website_link");
+        callInsert(jsonstring,stmt,p);
 
-        p.insertProducts(id,name,price,description,product_type,rating,image_link,product_link,website_link,stmt);
-
-        System.out.println("\nWelcome to Maybelline Product Tracker\n");
+        System.out.println("\nProduct Management System\n");
         while(true){
             System.out.println( displayMenu());
             System.out.println("Enter your choice :- ");
@@ -56,6 +46,7 @@ public class Main
                     break;
                 case 2:
                     System.out.println(displayproductType());
+                    System.out.println("\nEnter the product type:-");
                     int pt=sc.nextInt();
                     p.selectProductbyPT(pt);
                     break;
@@ -64,19 +55,22 @@ public class Main
                     float r=sc.nextFloat();
                     p.displayProductbyRating(r);
                     break;
+
                 case 4:
+                    System.out.println("Enter product id.");
+                    int pid=sc.nextInt();
+                    p.displayLinks(pid);
+                    break;
+                case 5:
                     System.out.println("Select a product type you wish to update the rating of.");
                     System.out.println(displayproductType());
                     int pt1=sc.nextInt();
                     p.updateRating(pt1);
                     break;
-                case 5:
-                    System.out.println("Select a product type you wish to delete");
-                    System.out.println(displayproductType());
-                    int pt2=sc.nextInt();
-                    p.deleteProduct(stmt,pt2);
-                    break;
                 case 6:
+                    p.deleteProduct(stmt);
+                    break;
+                case 7:
                     System.exit(0);
             }
         }
@@ -95,12 +89,27 @@ public class Main
     }
 
     public static String displayMenu(){
-        String res="\n*********************************************************************************************************************************************************\nPlease select the operation that you want to perform\n1.Display all products\n2.Display all products for a product type\n3.Display all products by rating\n4.Update rating for a product\n5.Delete a product\n6.Exit\n*********************************************************************************************************************************************************\n";
+        String res="\n*********************************************************************************************************************************************************\nPlease select the operation that you want to perform\n1.Display all products\n2.Display all products for a product type\n3.Display all products by rating\n4.Display all the links for a product\n5.Update rating for a product\n6.Delete a product\n7.Exit\n*********************************************************************************************************************************************************\n";
         return res;
     }
 
     public static String displayproductType(){
         return "\n1.blush\n2.eyeliner\n3.foundation\n4.lipstick\n5.nail_polish\n6.lip_liner\n7.bronzer\n8.eyeshadow\n9.mascara";
+    }
+
+    public static void callInsert(String jsonstring,Statement stmt,Product p) throws org.json.simple.parser.ParseException, SQLException {
+        p.createTable(jsonstring,stmt);
+        String[] id=jsonArrayOutput(jsonstring,"id");
+        String[] name=jsonArrayOutput(jsonstring,"name");
+        String[] price=jsonArrayOutput(jsonstring,"price");
+        String[] description =jsonArrayOutput(jsonstring,"description");
+        String[] rating=jsonArrayOutput(jsonstring,"rating");
+        String[] product_type=jsonArrayOutput(jsonstring,"product_type");
+        String[] image_link=jsonArrayOutput(jsonstring,"image_link");
+        String[] product_link=jsonArrayOutput(jsonstring,"product_link");
+        String[] website_link=jsonArrayOutput(jsonstring,"website_link");
+        p.insertProducts(id,name,price,description,product_type,rating,image_link,product_link,website_link,stmt);
+
     }
 
 }

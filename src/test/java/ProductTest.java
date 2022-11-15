@@ -42,11 +42,13 @@ public class ProductTest {
     @Test
     public void checkIfproductexistsbyproductType() throws SQLException {
         assertTrue(p.selectProductbyPT(2));
+
     }
 
     @Test
     public void checkIfproductdoesnotexistsbyproductType() throws SQLException {
         assertFalse(p.selectProductbyPT(10));
+
     }
 
     @Test
@@ -58,8 +60,13 @@ public class ProductTest {
     public void checkIfratingdoesnotexists() throws SQLException {
         assertFalse(p.displayProductbyRating(6.0f));
     }
+    @Test
+    public void checkIflinksexists() throws SQLException {
+        assertTrue(p.displayLinks(366));
 
-
-    
-
+    }
+    @Test
+    public void checkIflinksdpesnotexist() throws SQLException{
+        assertFalse(p.displayLinks(534));
+    }
 }
